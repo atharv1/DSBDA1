@@ -1,0 +1,66 @@
+//Hive
+start-all.sh
+> hdoop@hadoop:~/apache-hive-3.1.2-bin$ jps
+> hdoop@hadoop:~/apache-hive-3.1.2-bin$ ./hive
+
+hive> show databases;
+hive> create database db1;
+hive> use db1;
+hive> create table flight(fno int, year int, dest varchar(10),delay float);
+hive> alter table flight rename to air_flight;
+hive> alter table air_flight add columns(source varchar(10));
+drop table air_flight;
+hive> create table flight(fno int, year int, dest varchar(10),delay float);
+hive> insert into flight values(121, 2002, "Mumbai", 30.0);
+hive> insert into flight values(131, 2002, "Nagpur", 13.0);
+hive> insert into flight values(141, 2008, "Pune", 0.0);
+hive> insert into flight values(151, 2009, "Nashik",10.0);
+hive> select * from flight;
+
+sudo nano flight2.csv
+	inside
+	121,2008,Washington
+	151,2009,London
+	191,2002,Paris
+cd hadoop-3.2.3/
+cd bin/
+hdfs dfs -mkdir /Atha
+hdfs dfs -put ~/flight2.csv /Atha
+
+hive> create external table if not exists nflight (fno int, year int,source varchar(10))
+ > comment 'no of flights'
+ > row format delimited
+ > fields terminated by ','
+ > lines terminated by '\n'
+ > stored astextfile
+ > location '/Atha';
+hive> select * from nflight;
+hive> select a.fno, a.year, a.dest, b.source
+ > from flight a join nflight b
+ > on (a.fno = b.fno) ;
+
+hive> select avg(delay) from flight where year = 2002;
+
+
+
+
+
+
+> create index flight index on table flight(fno)
+ >as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler'
+ with deferred rebuilt; 
+
+ > show tables;
+
+ >select * from areoplane join mflight on 
+ areoplane.fno = mflight.fno;
+
+>select * from areoplane left join mflight on 
+ areoplane.fno = mflight.fno;
+
+> create external table pd(
+    id int, name varchar(20), age int)
+   > row format delimited
+   > fields terminated by ','
+   > location '../home/desktop';
+

@@ -1,0 +1,31 @@
+//Hadoop MapReduce
+
+
+> sudo mkdir Test
+> ls
+> sudo chmod -R 777 Test (only to give read access)
+> sudo chmod +r *.* (optional)
+> sudo chown -R hdoop Test (read,write,edit dir(optional))
+> cd Test
+> export CLASSPATH="$HADOOP_HOME/share/hadoop/mapreduce/hadoop-
+mapreduce-client-core-3.2.3.jar:
+$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-client-common-3.2.3.jar:
+$HADOOP_HOME/share/hadoop/common/hadoop-common-3.2.3.jar:~/Test/SalesCountry/*:
+$HADOOP_HOME/lib/*"
+
+> javac -d . SalesMapper.java SalesCountryReducer.java SalesCountryDriver.java
+> sudo gedit Manifest.txt
+edit this text in it (Main-Class: SalesCountry.SalesCountryDriver)
+
+> jar cfm Test1.jar Manifest.txt SalesCountry/*.class
+> ls
+> start-all.sh
+> jps (check if hadoop is working if not then start)
+> sudo mkdir ~/input5
+> sudo cp access_log_short.csv ~/input5
+> hdfs dfs -put ~/input5 /
+> hadoop jar Test1.jar /input5 /output6
+> hdfs dfs -cat /output6/part-00000
+
+
+
